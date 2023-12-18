@@ -4,10 +4,21 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  Legend,
+  Title,
+  Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement);
+ChartJS.register(
+  LineElement,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  Legend,
+  Title,
+  Tooltip
+);
 
 interface ChartProps {
   glassCounts: number[];
@@ -19,12 +30,9 @@ function LineChart({ glassCounts, drinkingTimes }: ChartProps) {
     labels: drinkingTimes,
     datasets: [
       {
-        label: "Glass Count",
-        backgroundColor: "rgba(75,192,192,0.4)",
-        borderColor: "rgba(75,192,192,1)",
-        borderWidth: 1,
-        hoverBackgroundColor: "rgba(75,192,192,0.6)",
-        hoverBorderColor: "rgba(75,192,192,1)",
+        label: "Total glass drank",
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
         data: glassCounts,
       },
     ],
@@ -35,6 +43,12 @@ function LineChart({ glassCounts, drinkingTimes }: ChartProps) {
     maintainAspectRatio: false,
     width: 800,
     height: 600,
+    plugins: {
+      title: {
+        display: true,
+        text: "Total Glass Drank vs Time",
+      },
+    },
   };
 
   return <Line data={chartData} options={options} />;

@@ -3,6 +3,7 @@ import LineChart from "./lineChart";
 import { Toaster, toast } from "sonner";
 import DrinkGlassButton from "./drinkGlassButton";
 import GenerateChartButton from "./generateChartButton";
+import BarChart from "./barChart";
 
 function Main() {
   const [glassCounts, setGlassCounts] = useState<number[]>([]);
@@ -16,7 +17,7 @@ function Main() {
       toast.error("You must select a glass size first");
     } else {
       toast.info("Drank one glass");
-      // Retrieve the selected size from local storage
+      // get the selected size from local storage
       const selectedSize = localStorage.getItem("selectedSize");
 
       if (selectedSize) {
@@ -41,7 +42,11 @@ function Main() {
 
   const handleGenerateChart = () => {
     if (localStorage.getItem("selectedSize")) {
-      setShowChart(true);
+      if (glassCounts.length === 0) {
+        toast.warning("You must drink at least one glass");
+      } else {
+        setShowChart(true);
+      }
     } else {
       toast.error("You must select a glass size");
     }
@@ -60,7 +65,7 @@ function Main() {
   }, [glassCounts, drinkingEvents]);
 
   useEffect(() => {
-    // Load glassCounts and drinkingEvents from local storage on component mount
+    // Load glassCounts and drinkingEvents from local storage
     const storedGlassCounts = localStorage.getItem("glassCount");
     const storedDrinkingEvents = localStorage.getItem("drinkingEvents");
     if (storedGlassCounts) {
@@ -78,18 +83,23 @@ function Main() {
       <div className="p-4 absolute top-0 left-0">
         <h1 className="text-lg font-semibold text-slate-700">Water Tracker</h1>
       </div>
-      <div className="py-16 flex flex-col gap-4 justify-center items-center">
+      <div className="py-16 flex flex-col md:flex-row lg:flex-row gap-4 justify-center items-center">
         <DrinkGlassButton handleDrinkGlass={handleDrinkGlass} />
         <GenerateChartButton handleGenerateChart={handleGenerateChart} />
       </div>
-      <div className="w-full h-[50vh]">
-        {showChart && glassCounts.length > 0 && (
-          <LineChart
-            glassCounts={glassCounts}
-            drinkingTimes={drinkingEvents.map((item) => item.time)}
-          />
-        )}
-      </div>
+      {showChart && glassCounts.length > 0 && (
+        <>
+          <div className="w-[80%] h-[50vh] pb-8">
+            <LineChart
+              glassCounts={glassCounts}
+              drinkingTimes={drinkingEvents.map((item) => item.time)}
+            />
+          </div>
+          <div className="w-[80%] h-[50vh] pb-8">
+            <BarChart drinkingEvents={drinkingEvents} />
+          </div>
+        </>
+      )}
     </>
   );
 }
