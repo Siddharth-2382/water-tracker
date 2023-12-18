@@ -81,7 +81,7 @@ function Main() {
     <>
       <Toaster richColors />
       <div className="p-4 absolute top-0 left-0">
-        <h1 className="text-2xl font-semibold text-slate-700">Water Tracker</h1>
+        <h1 className="text-lg font-semibold text-slate-700">Water Tracker</h1>
       </div>
       <div className="py-16 flex flex-col gap-4 justify-center items-center">
         <div className="flex gap-6">

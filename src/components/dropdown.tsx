@@ -33,7 +33,7 @@ function Dropdown() {
     <div className="flex flex-col">
       <button
         onClick={toggleDropdown}
-        className="absolute right-0 top-0 m-4 flex gap-1 text-xl font-semibold text-slate-700"
+        className="absolute right-0 top-0 m-4 flex gap-1 text-lg font-semibold text-slate-700"
       >
         Glass Size
         <ChevronDown className="h-8 w-8 text-slate-700 text-xl font-semibold cursor-pointer transition delay-200 hover:rotate-180" />
