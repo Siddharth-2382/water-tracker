@@ -11,44 +11,38 @@ function Main() {
   const [showChart, setShowChart] = useState(false);
 
   const handleDrinkGlass = () => {
-    toast.info("Drank one glass");
-    // Retrieve the selected size from local storage
-    const selectedSize = localStorage.getItem("selectedSize");
+    if (!localStorage.getItem("selectedSize")) {
+      toast.error("You must select a glass size first");
+    } else {
+      toast.info("Drank one glass");
+      // Retrieve the selected size from local storage
+      const selectedSize = localStorage.getItem("selectedSize");
 
-    if (selectedSize) {
-      // Update the glassCounts array and setDrinkingEvents
-      setGlassCounts((prevCounts) => [...prevCounts, prevCounts.length + 1]);
-      // Get the current time in 12-hour format without the date
-      const currentTime = new Date().toLocaleTimeString([], {
-        hour: "numeric",
-        minute: "numeric",
-        hour12: true,
-      });
+      if (selectedSize) {
+        // Update the glassCounts array and setDrinkingEvents
+        setGlassCounts((prevCounts) => [...prevCounts, prevCounts.length + 1]);
+        // Get the current time in 12-hour format without the date
+        const currentTime = new Date().toLocaleTimeString([], {
+          hour: "numeric",
+          minute: "numeric",
+          hour12: true,
+        });
 
-      // Store the time and selected glass size of drinking in local storage
-      const newDrinkingEvents = [
-        ...drinkingEvents,
-        { time: currentTime, size: selectedSize },
-      ];
-      setDrinkingEvents(newDrinkingEvents);
+        // Store the time and selected glass size of drinking in local storage
+        const newDrinkingEvents = [
+          ...drinkingEvents,
+          { time: currentTime, size: selectedSize },
+        ];
+        setDrinkingEvents(newDrinkingEvents);
+      }
     }
   };
 
   const handleGenerateChart = () => {
-    setShowChart(true);
-  };
-
-  const clearLocalStorageAtMidnight = () => {
-    const now = new Date();
-    if (
-      now.getHours() === 0 &&
-      now.getMinutes() === 0 &&
-      now.getSeconds() === 0
-    ) {
-      localStorage.clear();
-      // You can also add logic to reset state if needed
-      setGlassCounts([]);
-      setDrinkingEvents([]);
+    if (localStorage.getItem("selectedSize")) {
+      setShowChart(true);
+    } else {
+      toast.error("You must select a glass size");
     }
   };
 
