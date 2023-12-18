@@ -45,7 +45,11 @@ function Main() {
       if (glassCounts.length === 0) {
         toast.warning("You must drink at least one glass");
       } else {
-        setShowChart(true);
+        if (!showChart) {
+          setShowChart(true);
+        } else {
+          toast("Charts are available");
+        }
       }
     } else {
       toast.error("You must select a glass size");
@@ -80,22 +84,24 @@ function Main() {
   return (
     <>
       <Toaster richColors />
-      <div className="p-4 absolute top-0 left-0">
-        <h1 className="text-lg font-semibold text-slate-700">Water Tracker</h1>
+      <div className="px-4 pt-2">
+        <h1 className="text-4xl font-extrabold text-slate-700">
+          Water Tracker
+        </h1>
       </div>
-      <div className="py-16 flex flex-col md:flex-row lg:flex-row gap-4 justify-center items-center">
+      <div className="pb-16 pt-8 flex flex-col md:flex-row lg:flex-row gap-4 justify-center items-center">
         <DrinkGlassButton handleDrinkGlass={handleDrinkGlass} />
         <GenerateChartButton handleGenerateChart={handleGenerateChart} />
       </div>
       {showChart && glassCounts.length > 0 && (
         <>
-          <div className="w-[80%] h-[50vh] pb-8">
+          <div className="w-[100%] md:w-[80%] lg:w-[80%] h-[50vh] pb-8">
             <LineChart
               glassCounts={glassCounts}
               drinkingTimes={drinkingEvents.map((item) => item.time)}
             />
           </div>
-          <div className="w-[80%] h-[50vh] pb-8">
+          <div className="w-[100%] md:w-[80%] lg:w-[80%] h-[50vh] pb-8">
             <BarChart drinkingEvents={drinkingEvents} />
           </div>
         </>
