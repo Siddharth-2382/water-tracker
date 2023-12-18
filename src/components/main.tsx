@@ -1,7 +1,8 @@
-import { PlusCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import LineChart from "./lineChart";
 import { Toaster, toast } from "sonner";
+import DrinkGlassButton from "./drinkGlassButton";
+import GenerateChartButton from "./generateChartButton";
 
 function Main() {
   const [glassCounts, setGlassCounts] = useState<number[]>([]);
@@ -78,22 +79,8 @@ function Main() {
         <h1 className="text-lg font-semibold text-slate-700">Water Tracker</h1>
       </div>
       <div className="py-16 flex flex-col gap-4 justify-center items-center">
-        <div className="flex gap-6">
-          <button
-            onClick={handleDrinkGlass}
-            className="bg-blue-500 text-white text-lg font-semibold rounded-lg flex items-center gap-2 py-4 px-8 hover:bg-blue-500/90 transition-all cursor-pointer"
-          >
-            <PlusCircle /> Drink a glass
-          </button>
-        </div>
-        <div className="text-center">
-          <button
-            onClick={handleGenerateChart}
-            className="bg-black text-white text-lg font-semibold rounded-lg flex items-center gap-2 py-4 px-8 hover:bg-black/80 transition-all cursor-pointer"
-          >
-            Generate chart
-          </button>
-        </div>
+        <DrinkGlassButton handleDrinkGlass={handleDrinkGlass} />
+        <GenerateChartButton handleGenerateChart={handleGenerateChart} />
       </div>
       <div className="w-full h-[50vh]">
         {showChart && glassCounts.length > 0 && (

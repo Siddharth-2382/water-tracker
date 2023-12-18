@@ -1,5 +1,6 @@
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState } from "react";
+import { GLASS_SIZES } from "../constants/constants";
 
 function Dropdown() {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,30 +44,17 @@ function Dropdown() {
           isOpen ? "block" : "hidden"
         }`}
       >
-        <p
-          className={`p-2 hover:bg-gray-100 cursor-pointer ${
-            selectedSize === "200 ML" ? "bg-gray-200" : ""
-          }`}
-          onClick={() => handleSizeClick("200 ML")}
-        >
-          200 ML
-        </p>
-        <p
-          className={`p-2 hover:bg-gray-100 cursor-pointer ${
-            selectedSize === "250 ML" ? "bg-gray-200" : ""
-          }`}
-          onClick={() => handleSizeClick("250 ML")}
-        >
-          250 ML
-        </p>
-        <p
-          className={`p-2 hover:bg-gray-100 cursor-pointer ${
-            selectedSize === "300 ML" ? "bg-gray-200" : ""
-          }`}
-          onClick={() => handleSizeClick("300 ML")}
-        >
-          300 ML
-        </p>
+        {GLASS_SIZES.map((size) => (
+          <p
+            key={size}
+            className={`p-2 hover:bg-gray-100 cursor-pointer ${
+              selectedSize === size ? "bg-gray-200" : ""
+            }`}
+            onClick={() => handleSizeClick(size)}
+          >
+            {size}
+          </p>
+        ))}
       </div>
     </div>
   );
