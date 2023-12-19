@@ -4,6 +4,7 @@ import { Toaster, toast } from "sonner";
 import DrinkGlassButton from "./drinkGlassButton";
 import GenerateChartButton from "./generateChartButton";
 import BarChart from "./barChart";
+import GlassCounter from "./glassCounter";
 
 function Main() {
   const [glassCounts, setGlassCounts] = useState<number>(0);
@@ -103,6 +104,7 @@ function Main() {
         <h1 className="text-4xl font-extrabold text-slate-700">
           Water Tracker
         </h1>
+        <GlassCounter glassCounts={glassCounts} />
       </div>
       <div className="pb-16 pt-8 flex flex-col md:flex-row lg:flex-row gap-4 justify-center items-center">
         <DrinkGlassButton handleDrinkGlass={handleDrinkGlass} />
