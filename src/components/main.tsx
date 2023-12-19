@@ -6,7 +6,7 @@ import GenerateChartButton from "./generateChartButton";
 import BarChart from "./barChart";
 
 function Main() {
-  const [glassCounts, setGlassCounts] = useState<number[]>([]);
+  const [glassCounts, setGlassCounts] = useState<number>(0);
   const [drinkingEvents, setDrinkingEvents] = useState<
     { time: string; size: string }[]
   >([]);
@@ -22,7 +22,7 @@ function Main() {
 
       if (selectedSize) {
         // Update the glassCounts array and setDrinkingEvents
-        setGlassCounts((prevCounts) => [...prevCounts, prevCounts.length + 1]);
+        setGlassCounts((prevCounts) => prevCounts + 1);
         // Get the current time in 12-hour format without the date
         const currentTime = new Date().toLocaleTimeString([], {
           hour: "numeric",
@@ -42,7 +42,7 @@ function Main() {
 
   const handleGenerateChart = () => {
     if (localStorage.getItem("selectedSize")) {
-      if (glassCounts.length === 0) {
+      if (glassCounts === 0) {
         toast.warning("You must drink at least one glass");
       } else {
         if (!showChart) {
@@ -57,11 +57,11 @@ function Main() {
   };
 
   useEffect(() => {
-    const storedGlassCounts = JSON.parse(
-      localStorage.getItem("glassCount") ?? "[]"
+    const storedGlassCounts = Number(
+      JSON.parse(localStorage.getItem("glassCount") ?? "0")
     );
 
-    if (glassCounts.length > storedGlassCounts?.length) {
+    if (glassCounts > storedGlassCounts) {
       // Update local storage with the new values
       localStorage.setItem("glassCount", JSON.stringify(glassCounts));
       localStorage.setItem("drinkingEvents", JSON.stringify(drinkingEvents));
@@ -70,7 +70,7 @@ function Main() {
 
   useEffect(() => {
     // Load glassCounts and drinkingEvents from local storage
-    const storedGlassCounts = localStorage.getItem("glassCount");
+    const storedGlassCounts = Number(localStorage.getItem("glassCount"));
     const storedDrinkingEvents = localStorage.getItem("drinkingEvents");
 
     // Check if it's a new day
@@ -82,14 +82,14 @@ function Main() {
       localStorage.setItem("lastStoredDate", today);
       localStorage.removeItem("glassCount");
       localStorage.removeItem("drinkingEvents");
-      setGlassCounts([]);
+      setGlassCounts(0);
       setDrinkingEvents([]);
       return;
     }
 
     // update states based on local storage values
     if (storedGlassCounts) {
-      setGlassCounts(JSON.parse(storedGlassCounts));
+      setGlassCounts(storedGlassCounts);
     }
     if (storedDrinkingEvents) {
       setDrinkingEvents(JSON.parse(storedDrinkingEvents));
@@ -108,7 +108,7 @@ function Main() {
         <DrinkGlassButton handleDrinkGlass={handleDrinkGlass} />
         <GenerateChartButton handleGenerateChart={handleGenerateChart} />
       </div>
-      {showChart && glassCounts.length > 0 && (
+      {showChart && glassCounts > 0 && (
         <>
           <div className="w-[100%] md:w-[80%] lg:w-[80%] h-[50vh] pb-8">
             <LineChart drinkingEvents={drinkingEvents} />
