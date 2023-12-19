@@ -41,7 +41,7 @@ function BarChart({ drinkingEvents }: ChartProps) {
     labels: times,
     datasets: [
       {
-        label: "Total glass drank",
+        label: "Water drank (in ml)",
         borderColor: "rgb(0, 102, 255)",
         backgroundColor: "rgb(0, 102, 255, 0.5)",
         data: sizes,
