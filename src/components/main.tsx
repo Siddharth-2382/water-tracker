@@ -72,10 +72,25 @@ function Main() {
     // Load glassCounts and drinkingEvents from local storage
     const storedGlassCounts = localStorage.getItem("glassCount");
     const storedDrinkingEvents = localStorage.getItem("drinkingEvents");
+
+    // Check if it's a new day
+    const today = new Date().toLocaleDateString();
+    const lastStoredDate = localStorage.getItem("lastStoredDate");
+
+    if (!lastStoredDate || lastStoredDate !== today) {
+      // Reset storage for a new day
+      localStorage.setItem("lastStoredDate", today);
+      localStorage.removeItem("glassCount");
+      localStorage.removeItem("drinkingEvents");
+      setGlassCounts([]);
+      setDrinkingEvents([]);
+      return;
+    }
+
+    // update states based on local storage values
     if (storedGlassCounts) {
       setGlassCounts(JSON.parse(storedGlassCounts));
     }
-
     if (storedDrinkingEvents) {
       setDrinkingEvents(JSON.parse(storedDrinkingEvents));
     }
@@ -96,10 +111,7 @@ function Main() {
       {showChart && glassCounts.length > 0 && (
         <>
           <div className="w-[100%] md:w-[80%] lg:w-[80%] h-[50vh] pb-8">
-            <LineChart
-              glassCounts={glassCounts}
-              drinkingTimes={drinkingEvents.map((item) => item.time)}
-            />
+            <LineChart drinkingEvents={drinkingEvents} />
           </div>
           <div className="w-[100%] md:w-[80%] lg:w-[80%] h-[50vh] pb-8">
             <BarChart drinkingEvents={drinkingEvents} />

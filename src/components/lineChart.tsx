@@ -21,19 +21,35 @@ ChartJS.register(
 );
 
 interface ChartProps {
-  glassCounts: number[];
-  drinkingTimes: string[];
+  drinkingEvents: { time: string; size: string }[];
 }
 
-function LineChart({ glassCounts, drinkingTimes }: ChartProps) {
+function LineChart({ drinkingEvents }: ChartProps) {
+  // Get unique time values
+  const uniqueTimes = Array.from(
+    new Set(drinkingEvents.map((item) => item.time))
+  );
+
+  // Initialize an object to store counts for each time
+  const countsByTime: { [time: string]: number } = {};
+
+  // Calculate counts for each time
+  drinkingEvents.map((item) => {
+    const { time } = item;
+    countsByTime[time] = (countsByTime[time] || 0) + 1;
+    return countsByTime[time];
+  });
+
+  // Filter unique times and corresponding counts
+  const uniqueTimesWithCounts = uniqueTimes.map((time) => countsByTime[time]);
   const chartData = {
-    labels: drinkingTimes,
+    labels: uniqueTimes,
     datasets: [
       {
         label: "Total glass drank",
         borderColor: "rgb(255, 99, 132)",
         backgroundColor: "rgba(255, 99, 132, 0.5)",
-        data: glassCounts,
+        data: uniqueTimesWithCounts,
       },
     ],
   };

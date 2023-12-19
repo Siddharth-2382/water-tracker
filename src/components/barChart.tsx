@@ -23,14 +23,28 @@ interface ChartProps {
 }
 
 function BarChart({ drinkingEvents }: ChartProps) {
+  // Create a dictionary to store aggregated sizes for each time
+  const aggregatedData: { [time: string]: number } = {};
+
+  // Aggregate sizes based on time
+  drinkingEvents.forEach((entry) => {
+    const time = entry.time;
+    const size = parseInt(entry.size.split(" ")[0], 10); // Extract the numeric part of the size
+    aggregatedData[time] = (aggregatedData[time] || 0) + size;
+  });
+
+  // Extract time and size for plotting
+  const times = Object.keys(aggregatedData);
+  const sizes = times.map((time) => aggregatedData[time]);
+
   const chartData = {
-    labels: drinkingEvents.map((event) => event.time),
+    labels: times,
     datasets: [
       {
         label: "Total glass drank",
         borderColor: "rgb(0, 102, 255)",
         backgroundColor: "rgb(0, 102, 255, 0.5)",
-        data: drinkingEvents.map((event) => Number(event.size.split(" ")[0])),
+        data: sizes,
       },
     ],
   };
